@@ -1,0 +1,87 @@
+<style>
+
+    form {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+a {
+  color: #4CAF50;
+}
+
+</style>
+
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+{% if page == 'login' %}
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <label>Nazwa Użytkownika</label>
+        <input type="text" name="username" placeholder="Wpisz nazwe">
+
+        <label>Hasło</label>
+        <input type="password" name="password" placeholder="Wpisz hasło">
+
+        <input type="submit" value="Login">
+    </form>
+
+    <p>Nie zarejestrowany?</p>
+    <a href="{% url 'register' %}">Zarejestruj się</a>
+</div>
+
+{% else %}
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Register">
+    </form>
+<!--    <p>Już zarejestrowany?</p>-->
+<!--    <a href="{% url 'login' %}">Zaloguj się</a>-->
+</div>
+{% endif %}
+
+{% endblock content %}

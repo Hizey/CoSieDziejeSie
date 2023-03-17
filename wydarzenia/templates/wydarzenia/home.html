@@ -1,0 +1,129 @@
+<style>
+
+    .home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.home-container h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.home-container ul {
+  margin: 0;
+  padding: 0;
+}
+
+.home-container ul li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.home-container ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.home-container ul li a:hover {
+  text-decoration: underline;
+}
+
+.home-container h5 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.home-container a {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.home-container a:hover {
+  background-color: #0069d9;
+}
+
+.home-container span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.home-container small {
+  font-size: 14px;
+  color: #999;
+  margin-top: 5px;
+  display: block;
+}
+
+.home-container hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+</style>
+
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+ul{
+list-style:none;
+}
+</style>
+
+
+<div class="home-container">
+    <div>
+
+
+             <div>
+               <h2> <a href="{% url 'home' %}">Wszystkie</a></h2>
+            </div>
+        {% for topic in topics %}
+            <div style="display: inline-block;">
+                <ul>
+                   <li><a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        <br>
+        <a href="{% url 'create-room' %}">Create Room</a>
+    <h5>Liczba wydarzeń:{{room_count}}</h5>
+
+
+    <div>
+        {% for room in rooms %}
+            <div>
+
+                {% if request.user == room.host %}
+                <a href="{% url 'update-room' room.id %}">Edit</a>
+                <a href="{% url 'delete-room' room.id %}">Usuń</a>
+                {% endif %}
+
+                <span>@{{room.host.username}}</span>
+                <h5>{{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}}</a></h5>
+                <small>{{room.topic.name}}</small>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+</div>
+{% endblock content %}
