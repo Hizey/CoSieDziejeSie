@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wydarzenia', '0003_room_host'),
+        ("wydarzenia", "0003_room_host"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='message',
-            name='cena',
+            model_name="message",
+            name="price",
             field=models.DecimalField(decimal_places=2, max_digits=12, null=True),
         ),
         migrations.AddField(
-            model_name='message',
-            name='data',
+            model_name="message",
+            name="data",
             field=models.DateTimeField(null=True),
         ),
         migrations.AddField(
-            model_name='room',
-            name='cena',
+            model_name="room",
+            name="price",
             field=models.DecimalField(decimal_places=2, max_digits=12, null=True),
         ),
         migrations.AddField(
-            model_name='room',
-            name='date',
+            model_name="room",
+            name="date",
             field=models.DateTimeField(null=True),
         ),
     ]
