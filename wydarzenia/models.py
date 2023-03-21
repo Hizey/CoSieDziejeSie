@@ -12,17 +12,18 @@ class Topic(models.Model):
 class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200, default="")
-    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    description = models.TextField(default="", blank=True)
+    name = models.CharField(max_length=200)
+    price = models.DecimalField(max_digits=12, decimal_places=2, null=True)
+    description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ["-updated", "-created"]
 
-    def __str__(self):
+class Meta:
+    ordering = ["-updated", "-created"]
+
+    def __init__(self):
         return self.name
 
 
