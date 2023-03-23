@@ -7,17 +7,20 @@
         <ul>
           {% if request.user.is_authenticated %}
           <li><a class="nav-link" href="{% url 'create-room' %}">Dodaj wydarzenie</a></li>
-          <li><a class="nav-link" href="user.html">Mój profil</a></li>
-          <li><a class="nav-link" href="support.html">Support</a></li>
           {% endif %}
-          {% if request.user.is_authenticated %} <!-- do poprawy, dostępne tylko dla admina-->
+          <li><a class="nav-link" href="{% url 'history' %}">Minione</a></li>
+          {% if request.user.is_authenticated %}
+          <li><a class="nav-link" href="#">Mój profil</a></li>
+          {% endif %}
+          {% if not request.user.is_superuser and request.user.is_authenticated %}
+          <li><a class="nav-link" href="#">Support</a></li>
+          {% endif %}
+          {% if request.user.is_superuser %}
           <li class="dropdown"><a href="#"><span>Panel Admina</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Akceptacja wydarzeń</a></li>
-              <li><a href="#">Usunięte wydarzenia</a></li>
+              <li><a href="#">Główny</a></li>
               <li><a href="#">Lista użytkowników</a></li>
               <li><a href="#">Wiadomości</a></li>
-              <li><a href="#">Logi</a></li>
             </ul>
           </li>
           {% endif %}

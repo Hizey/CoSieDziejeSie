@@ -29,6 +29,9 @@ class Room(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     location = models.CharField(default="", max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Meta:
     ordering = ["-updated", "-created"]

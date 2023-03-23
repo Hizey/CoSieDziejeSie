@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from datetime import date
 
 from .forms import RoomForm
 from .models import Room, Topic
@@ -55,15 +56,28 @@ def register_page(request):
 
 
 def home(request):
-    q = request.GET.get("q") if request.GET.get("q") is not None else ""
-
-    rooms = Room.objects.filter(topic__name__icontains=q)
-
+    room_list_by_date = Room.objects.filter(
+        date__gte=date.today()
+    ).order_by("date")
     topics = Topic.objects.all()
-    room_count = rooms.count()
-
-    context = {"rooms": rooms, "topics": topics, "room_count": room_count}
+    room_count = room_list_by_date.count()
+    context = {
+        "topics": topics,
+        "room_list": room_list_by_date,
+    }
     return render(request, "wydarzenia/home.html", context)
+
+
+def history(request):
+    room_list_by_date = Room.objects.filter(
+        date__lt=date.today()
+    ).order_by("date")
+    topics = Topic.objects.all()
+    context = {
+        "topics": topics,
+        "room_list": room_list_by_date,
+    }
+    return render(request, "wydarzenia/history.html", context)
 
 
 def room(request, pk):
