@@ -4,9 +4,7 @@ from django.template.defaultfilters import slugify
 
 
 class Topic(models.Model):
-    objects = None
-    name = models.CharField(max_length=200, null=True)
-    slug = models.SlugField(null=True, unique=True)
+    name = models.CharField(max_length=200, default='')
 
     def __str__(self):
         return self.slug
@@ -18,12 +16,11 @@ class Topic(models.Model):
 
 
 class Room(models.Model):
-    objects = None
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=200, default='')
     price = models.DecimalField(max_digits=12, decimal_places=2, null=True)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, default='')
     date = models.DateTimeField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -33,9 +30,6 @@ class Room(models.Model):
 class Meta:
     ordering = ["-updated", "-created"]
 
-    def __init__(self):
-        self.name = None
-
     def __str__(self):
         return self.name
 
@@ -43,11 +37,9 @@ class Meta:
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    # body = models.TextField()
-    price = models.DecimalField(max_digits=12, decimal_places=2, null=True)
-    date = models.DateTimeField(blank=True, null=True)
+    body = models.TextField(default='')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    # def __str__(self):
-    #     return self.body[0:50]
+    def __str__(self):
+        return self.body

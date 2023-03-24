@@ -28,8 +28,7 @@ def login_page(request):
         else:
             messages.info(request, "Username or password is incorrect")
 
-    context = {"page": page}
-    return render(request, "wydarzenia/login_register.html", context)
+    return render(request, "wydarzenia/login_register.html", {"page": page})
 
 
 def logout_user(request):
@@ -68,8 +67,8 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    context = {"room": room}
-    return render(request, "wydarzenia/room.html", context)
+    room_messages = room.message_set.all().order_by('-created')
+    return render(request, "wydarzenia/room.html", {"room": room, 'room_messages': room_messages})
 
 
 @login_required(login_url="login")
@@ -81,8 +80,7 @@ def create_room(request):
             form.save()
             return redirect("home")
 
-    context = {"form": form}
-    return render(request, "wydarzenia/room_form.html", context)
+    return render(request, "wydarzenia/room_form.html", {"form": form})
 
 
 @login_required(login_url="login")
@@ -96,8 +94,7 @@ def update_room(request, pk):
             form.save()
             return redirect("home")
 
-    context = {"form": form}
-    return render(request, "wydarzenia/room_form.html", context)
+    return render(request, "wydarzenia/room_form.html", {"form": form})
 
 
 @login_required(login_url="login")
