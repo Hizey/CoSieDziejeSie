@@ -5,6 +5,8 @@ from django.template.defaultfilters import slugify
 
 class Topic(models.Model):
     name = models.CharField(max_length=200, default='')
+    slug = models.SlugField(max_length=200, default='')
+    prepopulated_fields = {"slug": ("name",)}
 
     def __str__(self):
         return self.slug
