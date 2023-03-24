@@ -1,12 +1,18 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import slugify
 
 
 class Topic(models.Model):
     name = models.CharField(max_length=200, default='')
 
     def __str__(self):
-        return self.name
+        return self.slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 
 class Room(models.Model):
@@ -18,6 +24,7 @@ class Room(models.Model):
     date = models.DateTimeField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    location = models.CharField(default="", max_length=50)
 
 
 class Meta:

@@ -1,53 +1,54 @@
 {% extends 'main.html' %}
-
+{% load static %}
 {% block content %}
 
+    <section id="portfolio" class="portfolio" style="margin-top: 50px">
+      <div class="container">
 
-
-
-<div class="home-container">
-    <div>
-
-
-             <div>
-               <h2> <a href="{% url 'home' %}">Wszystkie</a></h2>
-            </div>
-        {% for topic in topics %}
-            <div style="display: inline-block;">
-                <ul>
-                   <li><a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></li>
-                </ul>
-            </div>
-        {% endfor %}
-    </div>
-
-    <div>
-        <br>
-        <a href="{% url 'create-room' %}">Create Room</a>
-    <h5>Liczba wydarzeń:{{room_count}}</h5>
-
-
-    <div>
-        {% for room in rooms %}
-            <div>
-
-                {% if request.user == room.host %}
-                <a href="{% url 'update-room' room.id %}">Edit</a>
-                <a href="{% url 'delete-room' room.id %}">Usuń</a>
-                {% endif %}
-                {% if room.host %}
-                <span>@{{room.host.username}}</span>
-                {% endif %}
-                <h5>{{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}}</a></h5>
-                <small>{{room.topic.name}}</small>
-                <hr>
-            </div>
-            {% endfor %}
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-center">
+            <ul id="portfolio-flters">
+              <li data-filter="*" class="filter-active">Wszystkie</li>
+              {% for topic in topics %}
+              <li data-filter=".filter-{{topic.slug}}">{{topic.name}}</li>
+              {% endfor %}
+              {% if request.user.is_authenticated %}
+              <li data-filter=".filter-own">Moje</li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-    </div>
+
+        <div class="row portfolio-container">
+          {% for room in rooms %}
+          <div class="col-lg-4 col-md-6 portfolio-item filter-{{room.topic.slug}}
+                      {% if request.user == room.host %}
+                      filter-own
+                      {% endif %}
+          ">
+            <div class="portfolio-wrap">
+              <img src="{% static 'assets/img/portfolio/1.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>{{ room.name }} {{room.topic}}</h4>
+                <p>{{ room.date|date:"d.m.y" }}</p>
+                <p>{{ room.location }}</p>
+                <div class="portfolio-links">
+                  <a href="#" title="Weź Udział"><i class="bx bx-plus"></i></a>
+                  <a href="{% url 'room' room.id %}" title="Zobacz opis"><i class="bx bx-link"></i></a>
+                  {% if request.user == room.host %}
+                    <a href="{% url 'update-room' room.id %}" title="Edytuj"><i class="bx bx-edit"></i></a>
+                    <a href="{% url 'delete-room' room.id %}" title="Usuń"><i class="bx bx-trash"></i></a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </section>
 
 
 
-
-</div>
 {% endblock content %}

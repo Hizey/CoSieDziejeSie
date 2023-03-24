@@ -1,57 +1,36 @@
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-    }
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
+      <h1 class="logo"><a href="/">CoSieDziejeSie</a></h1>
 
-    a {
-        text-decoration: none;
-        color: #333;
-    }
+      <nav id="navbar" class="navbar">
+        <ul>
+          {% if request.user.is_authenticated %}
+          <li><a class="nav-link" href="{% url 'create-room' %}">Dodaj wydarzenie</a></li>
+          <li><a class="nav-link" href="user.html">Mój profil</a></li>
+          <li><a class="nav-link" href="support.html">Support</a></li>
+          {% endif %}
+          {% if request.user.is_authenticated %} <!-- do poprawy, dostępne tylko dla admina-->
+          <li class="dropdown"><a href="#"><span>Panel Admina</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Akceptacja wydarzeń</a></li>
+              <li><a href="#">Usunięte wydarzenia</a></li>
+              <li><a href="#">Lista użytkowników</a></li>
+              <li><a href="#">Wiadomości</a></li>
+              <li><a href="#">Logi</a></li>
+            </ul>
+          </li>
+          {% endif %}
+          {% if request.user.is_authenticated %}
+          <li><a class="nav-link" href="{% url 'logout'  %}">Wyloguj</a></li>
+          {% else %}
+          <li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+          {% endif %}
 
-    a:hover {
-        color: #0077cc;
-    }
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
 
-    h1 {
-        font-size: 32px;
-        margin: 0;
-        padding: 10px;
-    }
-
-    hr {
-        border: none;
-        border-top: 1px solid #ccc;
-        margin: 20px 0;
-    }
-
-    /* Przykładowy styl dla linka wyloguj */
-    .logout-link {
-        background-color: #0077cc;
-        color: #fff;
-        padding: 8px 16px;
-        border-radius: 4px;
-    }
-
-    /* Przykładowy styl dla linka zaloguj */
-    .login-link {
-        background-color: #fff;
-        color: #0077cc;
-        border: 1px solid #0077cc;
-        padding: 8px 16px;
-        border-radius: 4px;
-    }
-</style>
-<!--for now it s testing css cod for better visualization this web, that have no classes and id that s why i can t make it in different css style-->
-<a href="/">
-    <h1>LOGO</h1>
-</a>
-
-{% if request.user.is_authenticated %}
-<p>Hello {{request.user}}!</p>
-    <a href="{% url 'logout'  %}" class="logout-link">Wyloguj</a>
-{% else %}
-    <a href="{% url 'login' %}" class="login-link">Login</a>
-{% endif %}
-
-<hr>
+    </div>
+  </header>
+  <!-- End Header -->
