@@ -61,11 +61,7 @@ def home(request):
     ).order_by("date")
     topics = Topic.objects.all()
     room_count = room_list_by_date.count()
-    context = {
-        "topics": topics,
-        "room_list": room_list_by_date,
-    }
-    return render(request, "wydarzenia/home.html", context)
+    return render(request, "wydarzenia/home.html", {"topics": topics, "room_list": room_list_by_date})
 
 
 def history(request):
@@ -77,7 +73,7 @@ def history(request):
         "topics": topics,
         "room_list": room_list_by_date,
     }
-    return render(request, "wydarzenia/history.html", context)
+    return render(request, "wydarzenia/history.html", {"topics": topics, "room_list": room_list_by_date})
 
 
 def room(request, pk):
@@ -88,7 +84,9 @@ def room(request, pk):
 
 def profile(request, pk):
     profile = get_object_or_404(User, pk=pk)
-    room_list_by_date = Room.objects.order_by("date")
+    room_list_by_date = Room.objects.filter(
+        host=pk
+    ).order_by("date")
     topics = Topic.objects.all()
     context = {
         "profile": profile,

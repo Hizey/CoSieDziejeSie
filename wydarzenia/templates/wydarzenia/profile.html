@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <section id="breadcrumbs" class="breadcrumbs">
+    <section id="breadcrumbs" class="breadcrumbs" style="margin-top: -50px">
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
@@ -13,9 +13,10 @@
       </div>
     </section><!-- End Breadcrumbs -->
 
-    <section id="portfolio-details" class="portfolio-details">
+    <section id="portfolio-details" class="portfolio-details portfolio">
       <div class="container">
         <div class="row gy-4">
+
           <div class="col-lg-4">
             <div class="portfolio-info">
               <h3>Profil</h3>
@@ -31,11 +32,16 @@
 <!--              <h2>Opis</h2>-->
 <!--            </div>-->
           </div>
+
           <div class="col-lg-8">
-            <h4>Wydarzenia:</h4>
+              {% if room_list %}
+                <h4>Wydarzenia użytkownika:</h4>
+              {% else %}
+                <h4>Brak wydarzeń</h4>
+              {% endif %}
             <div class="row portfolio-container">
               {% for room in room_list %}
-              <div style="position: relative" class="col-lg-4 col-md-6 portfolio-item">
+              <div class="col-lg-6 col-md-6 portfolio-item">
                 <div class="portfolio-wrap">
                   <img src="{% static 'assets/img/portfolio/1.jpg' %}" class="img-fluid" alt="">
                   <div class="portfolio-info">
@@ -43,7 +49,7 @@
                     <p>{{ room.date|date:"d.m.y" }}</p>
                     <p>{{ room.location }}</p>
                     <div class="portfolio-links">
-                      <a href="#" title="Weź Udział"><i class="bx bx-plus"></i></a>
+<!--                      <a href="#" title="Weź Udział"><i class="bx bx-plus"></i></a>-->
                       <a href="{% url 'room' room.id %}" title="Zobacz opis"><i class="bx bx-link"></i></a>
                       {% if request.user == room.host %}
                         <a href="{% url 'update-room' room.id %}" title="Edytuj"><i class="bx bx-edit"></i></a>
@@ -55,24 +61,10 @@
 
               </div>
               {% endfor %}
-
             </div>
           </div>
         </div>
-
       </div>
     </section>
-
-    <div class="comment">
-    <h3>Conversation</h3>
-        <hr>
-        {% for message in room_messages %}
-        <div>
-            <small>@{{message.user}}   {{message.created|timesince}} ago</small>
-            <p> {{message.body}}</p>
-            <hr>
-        </div>
-        {% endfor  %}
-    </div>
 
 {% endblock %}

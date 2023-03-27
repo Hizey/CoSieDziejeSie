@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-    <section id="portfolio" class="portfolio" style="margin-top: 50px">
+    <section id="portfolio" class="portfolio" style="margin-top: -50px">
       <div class="container">
         <div class="section-title">
           <h2>Minione Wydarzenia</h2>
@@ -23,7 +23,7 @@
 
         <div class="row portfolio-container">
           {% for room in room_list %}
-          <div style="position: relative" class="col-lg-4 col-md-6 portfolio-item filter-{{room.topic.slug}}
+          <div class="col-lg-4 col-md-6 portfolio-item filter-{{room.topic.slug}}
                       {% if request.user == room.host %}
                       filter-own
                       {% endif %}
