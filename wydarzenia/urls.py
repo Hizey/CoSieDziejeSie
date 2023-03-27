@@ -12,4 +12,5 @@ urlpatterns = [
     path("update-room/<int:pk>/", views.update_room, name="update-room"),
     path("delete-room/<int:pk>/", views.delete_room, name="delete-room"),
     path("historia/", views.history, name="history"),
+    path("profil/<int:pk>/", views.profile, name="profile"),
 ]

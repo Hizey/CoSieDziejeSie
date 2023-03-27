@@ -36,7 +36,7 @@
                 <p>{{ room.date|date:"d.m.y" }}</p>
                 <p>{{ room.location }}</p>
                 <div class="portfolio-links">
-                  <a href="#" title="Weź Udział"><i class="bx bx-plus"></i></a>
+<!--                  <a href="#" title="Weź Udział"><i class="bx bx-plus"></i></a>-->
                   <a href="{% url 'room' room.id %}" title="Zobacz opis"><i class="bx bx-link"></i></a>
                   {% if request.user == room.host %}
                     <a href="{% url 'update-room' room.id %}" title="Edytuj"><i class="bx bx-edit"></i></a>

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from datetime import date
+from django.shortcuts import get_object_or_404
 
 from .forms import RoomForm
 from .models import Room, Topic
@@ -83,6 +84,18 @@ def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('-created')
     return render(request, "wydarzenia/room.html", {"room": room, 'room_messages': room_messages})
+
+
+def profile(request, pk):
+    profile = get_object_or_404(User, pk=pk)
+    room_list_by_date = Room.objects.order_by("date")
+    topics = Topic.objects.all()
+    context = {
+        "profile": profile,
+        "topics": topics,
+        "room_list": room_list_by_date,
+    }
+    return render(request, "wydarzenia/profile.html", context)
 
 
 @login_required(login_url="login")
