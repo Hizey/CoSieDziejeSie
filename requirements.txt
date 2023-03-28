@@ -5,4 +5,3 @@ django-tinymce==3.6.0
 isort==5.12.0
 mysqlclient==2.1.1
 python-decouple==3.8
-django-tinymce==3.6.0
