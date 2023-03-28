@@ -764,10 +764,17 @@ section {
   transition: all 0.3s ease-in-out;
 }
 
-.portfolio #portfolio-flters li:hover,
-.portfolio #portfolio-flters li.filter-active {
+.portfolio #portfolio-flters li a {
+  color: #444444;
+  transition: all 0.3s ease-in-out;
+}
+
+.portfolio #portfolio-flters li a:hover,
+.portfolio #portfolio-flters li.filter-active a{
   color: #49b5e7;
 }
+
+
 
 .portfolio #portfolio-flters li:last-child {
   margin-right: 0;
