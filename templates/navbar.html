@@ -10,7 +10,7 @@
           {% endif %}
           <li><a class="nav-link" href="{% url 'history' %}">Minione</a></li>
           {% if request.user.is_authenticated %}
-          <li><a class="nav-link" href="#">Mój profil</a></li>
+          <li><a class="nav-link" href="{% url 'profile' request.user.id %}">Mój profil</a></li>
           {% endif %}
           {% if not request.user.is_superuser and request.user.is_authenticated %}
           <li><a class="nav-link" href="#">Support</a></li>
@@ -18,7 +18,7 @@
           {% if request.user.is_superuser %}
           <li class="dropdown"><a href="#"><span>Panel Admina</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Główny</a></li>
+              <li><a href="{% url 'admin:index' %}">Główny</a></li>
               <li><a href="#">Lista użytkowników</a></li>
               <li><a href="#">Wiadomości</a></li>
             </ul>

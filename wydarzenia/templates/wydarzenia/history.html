@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-    <section id="portfolio" class="portfolio" style="margin-top: 50px">
+    <section id="portfolio" class="portfolio">
       <div class="container">
         <div class="section-title">
           <h2>Minione Wydarzenia</h2>
@@ -10,32 +10,29 @@
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-center">
             <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">Wszystkie</li>
+              <li {% if not active_topic %} class="filter-active" {% endif %}>
+                  <a href="{% url 'history' %}">Wszystkie</a>
+              </li>
               {% for topic in topics %}
-              <li data-filter=".filter-{{topic.slug}}">{{topic.name}}</li>
+                <li {% if topic.name == active_topic %} class="filter-active" {% endif %}>
+                    <a href="{% url 'history' %}?q={{topic.name}}">{{topic.name}}</a>
+                </li>
               {% endfor %}
-              {% if request.user.is_authenticated %}
-              <li data-filter=".filter-own">Moje</li>
-              {% endif %}
             </ul>
           </div>
         </div>
 
         <div class="row portfolio-container">
           {% for room in room_list %}
-          <div class="col-lg-4 col-md-6 portfolio-item filter-{{room.topic.slug}}
-                      {% if request.user == room.host %}
-                      filter-own
-                      {% endif %}
-          ">
+          <div class="col-lg-4 col-md-6 portfolio-item">
             <div class="portfolio-wrap">
               <img src="{% static 'assets/img/portfolio/1.jpg' %}" class="img-fluid" alt="">
               <div class="portfolio-info">
-                <h4>{{ room.name }} {{room.topic}}</h4>
+                <h4>{{ room.name }}</h4>
                 <p>{{ room.date|date:"d.m.y" }}</p>
                 <p>{{ room.location }}</p>
                 <div class="portfolio-links">
-                  <a href="#" title="Weź Udział"><i class="bx bx-plus"></i></a>
+<!--                  <a href="#" title="Weź Udział"><i class="bx bx-plus"></i></a>-->
                   <a href="{% url 'room' room.id %}" title="Zobacz opis"><i class="bx bx-link"></i></a>
                   {% if request.user == room.host %}
                     <a href="{% url 'update-room' room.id %}" title="Edytuj"><i class="bx bx-edit"></i></a>
@@ -46,7 +43,6 @@
             </div>
           </div>
           {% endfor %}
-
         </div>
       </div>
     </section>

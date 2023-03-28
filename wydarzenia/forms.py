@@ -6,7 +6,7 @@ from .models import Room
 
 
 class RoomForm(ModelForm):
-    description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    description = forms.CharField(widget=TinyMCE(attrs={"cols": 80, "rows": 30}))
 
     class Meta:
         model = Room
