@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from datetime import date
+from django.shortcuts import get_object_or_404
 
 from .forms import RoomForm
 from .models import Room, Topic
@@ -55,34 +56,59 @@ def register_page(request):
 
 
 def home(request):
-    room_list_by_date = Room.objects.filter(
-        date__gte=date.today()
+    q = request.GET.get("q") if request.GET.get("q") is not None else ""
+    rooms = Room.objects.filter(
+        topic__name__icontains=q, date__gte=date.today()
     ).order_by("date")
-    topics = Topic.objects.all()
-    room_count = room_list_by_date.count()
-    context = {
-        "topics": topics,
-        "room_list": room_list_by_date,
-    }
-    return render(request, "wydarzenia/home.html", context)
+    return render(
+        request,
+        "wydarzenia/home.html",
+        {
+            "room_list": rooms,
+            "topics": Topic.objects.all(),
+            "room_count": rooms.count(),
+            "active_topic": q,
+        },
+    )
 
 
 def history(request):
-    room_list_by_date = Room.objects.filter(
-        date__lt=date.today()
-    ).order_by("date")
-    topics = Topic.objects.all()
-    context = {
-        "topics": topics,
-        "room_list": room_list_by_date,
-    }
-    return render(request, "wydarzenia/history.html", context)
+    q = request.GET.get("q") if request.GET.get("q") is not None else ""
+    rooms = Room.objects.filter(
+        topic__name__icontains=q, date__lt=date.today()
+    ).order_by("-date")
+    return render(
+        request,
+        "wydarzenia/history.html",
+        {
+            "room_list": rooms,
+            "topics": Topic.objects.all(),
+            "room_count": rooms.count(),
+            "active_topic": q,
+        },
+    )
 
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    room_messages = room.message_set.all().order_by('-created')
-    return render(request, "wydarzenia/room.html", {"room": room, 'room_messages': room_messages})
+    room_messages = room.message_set.all().order_by("-created")
+    return render(
+        request, "wydarzenia/room.html", {"room": room, "room_messages": room_messages}
+    )
+
+
+def profile(request, pk):
+    profile = get_object_or_404(User, pk=pk)
+    room_list_by_date = Room.objects.filter(host=pk).order_by("date")
+    return render(
+        request,
+        "wydarzenia/profile.html",
+        {
+            "profile": profile,
+            "topics": Topic.objects.all(),
+            "room_list": room_list_by_date,
+        },
+    )
 
 
 @login_required(login_url="login")

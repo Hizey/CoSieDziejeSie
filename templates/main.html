@@ -34,19 +34,13 @@
 
     {% include 'navbar.html' %}
 
-    <div style="margin-top:100px;">.</div> <!-- pamiętać, żeby usunąć-->
-
-    {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li>{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{message}}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
+<!--    <div style="margin-top:100px; display:block;"></div> &lt;!&ndash; pamiętać, żeby usunąć&ndash;&gt;-->
+    <div class="nav-margin"></div>
+    <main id="main">
     {% block content %}
 
     {% endblock %}
+    </main>
       <!-- ======= Footer ======= -->
     <footer id="footer">
 
@@ -66,13 +60,22 @@
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
+<!--    TEMPORARY SECTION, Pawel Rozuk will change it    -->
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{message}}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
   </footer>
 
   <!-- Vendor JS Files -->
   <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<!--  <script src="{# static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' #}"></script>-->
   <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
 
   <!-- Template Main JS File -->

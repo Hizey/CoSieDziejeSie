@@ -11,5 +11,6 @@ urlpatterns = [
     path("create-room/", views.create_room, name="create-room"),
     path("update-room/<int:pk>/", views.update_room, name="update-room"),
     path("delete-room/<int:pk>/", views.delete_room, name="delete-room"),
-    path("historia/", views.history, name="history"),
+    path("history/", views.history, name="history"),
+    path("profile/<int:pk>/", views.profile, name="profile"),
 ]
