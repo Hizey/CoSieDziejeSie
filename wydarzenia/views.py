@@ -55,43 +55,37 @@ def register_page(request):
     return render(request, "wydarzenia/login_register.html", {"form": form})
 
 
-# def home(request):
-#     room_list_by_date = Room.objects.filter(
-#         date__gte=date.today()
-#     ).order_by("date")
-#     topics = Topic.objects.all()
-#     room_count = room_list_by_date.count()
-#     return render(request, "wydarzenia/home.html", {"topics": topics, "room_list": room_list_by_date})
-
-
 def home(request):
     q = request.GET.get("q") if request.GET.get("q") is not None else ""
     rooms = Room.objects.filter(
-        topic__name__icontains=q,
-        date__gte=date.today()
+        topic__name__icontains=q, date__gte=date.today()
     ).order_by("date")
-    topics = Topic.objects.all()
-    room_count = rooms.count()
-    context = {
-        "room_list": rooms,
-        "topics": topics,
-        "room_count": room_count,
-        "active_topic": q,
-    }
-    return render(request, "wydarzenia/home.html", context)
+    return render(
+        request,
+        "wydarzenia/home.html",
+        {
+            "room_list": rooms,
+            "topics": Topic.objects.all(),
+            "room_count": rooms.count(),
+            "active_topic": q,
+        },
+    )
 
 
 def history(request):
-    room_list_by_date = Room.objects.filter(date__lt=date.today()).order_by("date")
-    topics = Topic.objects.all()
-    context = {
-        "topics": topics,
-        "room_list": room_list_by_date,
-    }
+    q = request.GET.get("q") if request.GET.get("q") is not None else ""
+    rooms = Room.objects.filter(
+        topic__name__icontains=q, date__lt=date.today()
+    ).order_by("-date")
     return render(
         request,
         "wydarzenia/history.html",
-        {"topics": topics, "room_list": room_list_by_date},
+        {
+            "room_list": rooms,
+            "topics": Topic.objects.all(),
+            "room_count": rooms.count(),
+            "active_topic": q,
+        },
     )
 
 
@@ -106,13 +100,15 @@ def room(request, pk):
 def profile(request, pk):
     profile = get_object_or_404(User, pk=pk)
     room_list_by_date = Room.objects.filter(host=pk).order_by("date")
-    topics = Topic.objects.all()
-    context = {
-        "profile": profile,
-        "topics": topics,
-        "room_list": room_list_by_date,
-    }
-    return render(request, "wydarzenia/profile.html", context)
+    return render(
+        request,
+        "wydarzenia/profile.html",
+        {
+            "profile": profile,
+            "topics": Topic.objects.all(),
+            "room_list": room_list_by_date,
+        },
+    )
 
 
 @login_required(login_url="login")

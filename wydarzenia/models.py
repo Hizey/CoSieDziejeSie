@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from tinymce import models as tinymce_models
 from django.template.defaultfilters import slugify
 
 
@@ -22,7 +23,7 @@ class Room(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, default="")
     price = models.DecimalField(max_digits=12, decimal_places=2, null=True)
-    description = models.TextField(blank=True, default="")
+    description = tinymce_models.HTMLField(blank=True, default="")
     date = models.DateTimeField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
