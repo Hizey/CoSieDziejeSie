@@ -30,7 +30,7 @@ def login_page(request):
         else:
             messages.info(request, "Username or password is incorrect")
 
-    return render(request, "wydarzenia/login_register.html", {"page": page})
+    return render(request, "wydarzenia/login.html", {"page": page})
 
 
 def logout_user(request):
@@ -52,7 +52,7 @@ def register_page(request):
         else:
             messages.warning(request, "error rejestracji")
 
-    return render(request, "wydarzenia/login_register.html", {"form": form})
+    return render(request, "wydarzenia/register.html", {"form": form})
 
 
 def home(request):
@@ -90,26 +90,31 @@ def history(request):
 
 
 def room(request, pk):
-    room = Room.objects.get(id=pk)
-    room_messages = room.message_set.all().order_by("-created")
-    return render(
-        request, "wydarzenia/room.html", {"room": room, "room_messages": room_messages}
-    )
+    try:
+        room = Room.objects.get(id=pk)
+        room_messages = room.message_set.all().order_by("-created")
+        return render(
+            request, "wydarzenia/room.html", {"room": room, "room_messages": room_messages}
+        )
+    except Room.DoesNotExist:
+        return render(request, "404.html", {"my_var": "The Room You Are Looking For Does Not Exists"})
 
 
 def profile(request, pk):
-    profile = get_object_or_404(User, pk=pk)
-    room_list_by_date = Room.objects.filter(host=pk).order_by("date")
-    return render(
-        request,
-        "wydarzenia/profile.html",
-        {
-            "profile": profile,
-            "topics": Topic.objects.all(),
-            "room_list": room_list_by_date,
-        },
-    )
-
+    try:
+        profile = get_object_or_404(User, pk=pk)
+        room_list_by_date = Room.objects.filter(host=pk).order_by("date")
+        return render(
+            request,
+            "wydarzenia/profile.html",
+            {
+                "profile": profile,
+                "topics": Topic.objects.all(),
+                "room_list": room_list_by_date,
+            },
+        )
+    except profile.DoesNotExist:
+        return render(request, "404.html", {"my_var": "User Does Not Exists"})
 
 @login_required(login_url="login")
 def create_room(request):
@@ -125,23 +130,37 @@ def create_room(request):
 
 @login_required(login_url="login")
 def update_room(request, pk):
-    room = Room.objects.get(id=pk)
-    form = RoomForm(instance=room)
+    try:
+        room = Room.objects.get(id=pk)
+        form = RoomForm(instance=room)
 
-    if request.method == "POST":
-        form = RoomForm(request.POST, instance=room)
-        if form.is_valid():
-            form.save()
-            return redirect("home")
+        if request.method == "POST":
+            form = RoomForm(request.POST, instance=room)
+            if form.is_valid():
+                form.save()
+                return redirect("home")
 
-    return render(request, "wydarzenia/room_form.html", {"form": form})
-
+        return render(request, "wydarzenia/room_form.html", {"form": form})
+    except Room.DoesNotExist:
+        return render(request, "404.html", {"my_var": "The Room You Want To Update Does Not Exists"})
 
 @login_required(login_url="login")
 def delete_room(request, pk):
-    room = Room.objects.get(id=pk)
+    try:
+        room = Room.objects.get(id=pk)
 
-    if request.method == "POST":
-        room.delete()
-        return redirect("home")
-    return render(request, "wydarzenia/delete.html", {"obj": room})
+        if request.method == "POST":
+            room.delete()
+            return redirect("home")
+        return render(request, "wydarzenia/delete.html", {"obj": room})
+    except Room.DoesNotExist:
+        return render(request, "404.html", {"my_var": "The Room You Want To Delete Does Not Exists"})
+
+
+
+def error_500(request):
+    return render(request, '500.html')
+
+
+def error_404(request, exception):
+    return render(request, '404.html')
