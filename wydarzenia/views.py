@@ -113,18 +113,14 @@ def profile(request, pk):
 
 @login_required(login_url="login")
 def create_room(request):
-    submitted = False
+    form = RoomForm()
     if request.method == "POST":
         form = RoomForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/create_room?submitted=True')
-    else:
-        form = RoomForm
-        if 'submitted' in request.GET:
-            submitted = True
+            return redirect("home")
 
-    return render(request, "wydarzenia/room_form.html", {"form": form, 'submitted': submitted})
+    return render(request, "wydarzenia/room_form.html", {"form": form})
 
 
 @login_required(login_url="login")

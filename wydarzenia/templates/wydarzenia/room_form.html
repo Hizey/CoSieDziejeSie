@@ -1,52 +1,61 @@
 {% extends 'main.html' %}
 
 {% block content %}
-
+{% load static %}
 <section id="add-event" class="add-event">
       <div class="container">
         <div class="row row mt-5 d-flex justify-content-center" >
 
           <div class="col-lg-8 mt-5 mt-lg-0">
-            {% if submitted %}
-              <h4>Sukces</h4>
-            {% else %}
 
             <form action="" method="POST" role="form" class="php-email-form">
                 {% csrf_token %}
                 {{form.media}}
-                {{form.as_p}}
+
 
               <div class="row">
                 <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Nazwa wydarzenia" required>
+                  <h6>Nazwa wydarzenia</h6>
+                  {{form.name}}
                 </div>
                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Miejsce" required>
+                  <h6>Kategoria</h6>
+                  {{ form.topic }}
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Data" required>
+                  <h6>Miejsce</h6>
+                  {{ form.location }}
                 </div>
                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Organizator" required>
+                  <h6>Cena</h6>
+                  {{ form.price }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <h6>Data</h6>
+                  {{ form.date }}
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <h6>Godzina rozpoczęcia</h6>
+                  {{ form.time }}
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
                 </div>
               </div>
 
               <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Opisz krótko wydarzenie" required></textarea>
-              </div>
-
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Wydarzenie czeka na akceptację administracji</div>
+                <h6>Opisz wydarzenie</h6>
+                {{ form.description }}
               </div>
 
               <div class="text-center"><a href="#"><button type="submit">Dodaj wydarzenie</button></a></div>
             </form>
-          {% endif %}
           </div>
 
         </div>
