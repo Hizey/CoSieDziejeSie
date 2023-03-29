@@ -12,6 +12,10 @@
                 {% csrf_token %}
                 {{form.media}}
 
+              <div class="form-group mt-3">
+                <h6>Host</h6>
+                {{ form.host }}
+              </div>
 
               <div class="row">
                 <div class="col-md-6 form-group">

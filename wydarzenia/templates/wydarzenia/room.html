@@ -32,7 +32,7 @@
               <ul>
                 <li><strong>Miejsce</strong>: {{ room.location }}</li>
                 <li><strong>Data</strong>: {{ room.date|date:"d.m.Y" }}r.</li>
-                <li><strong>Start</strong>: {{ room.date|date:"H:i" }}</li>
+                <li><strong>Start</strong>: {{ room.time|time:"H:i" }}</li>
                 <li><strong>Cena</strong>: {% if room.price > 0 %}{{ room.price }}zł{% else %}Free{% endif %}</li>
                 <li><strong>Dodał</strong>: <a href="{% url 'profile' room.host.id %}">{{ room.host }}</a></li>
               </ul>
