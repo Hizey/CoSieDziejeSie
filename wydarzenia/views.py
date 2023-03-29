@@ -116,15 +116,16 @@ def profile(request, pk):
     except profile.DoesNotExist:
         return render(request, "404.html", {"my_var": "User Does Not Exists"})
 
+
 @login_required(login_url="login")
 def create_room(request):
-    form = RoomForm()
+
     if request.method == "POST":
         form = RoomForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("home")
-
+    form = RoomForm()
     return render(request, "wydarzenia/room_form.html", {"form": form})
 
 
