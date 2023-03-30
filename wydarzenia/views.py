@@ -138,7 +138,7 @@ def profile(request, pk):
 def create_room(request):
     submitted = False
     if request.method == "POST":
-        form = RoomForm(request.POST)
+        form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
             room = form.save(commit=False)
             room.host = request.user

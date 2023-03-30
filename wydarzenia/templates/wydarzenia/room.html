@@ -20,7 +20,13 @@
             <div class="portfolio-details-slider swiper">
               <div class="swiper-wrapper align-items-center">
                 <div class="">
-                  <img src="{% static 'assets/img/portfolio/1.jpg' %}" alt="">
+
+
+                    {% if room.image %}
+                        <img src="{{ room.image.url }}" alt="">
+                    {% else %}
+                        <img src="{% static 'assets/img/portfolio/1.jpg' %}" alt="">
+                    {% endif %}
                 </div>
               </div>
             </div>

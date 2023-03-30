@@ -10,7 +10,7 @@ from .models import Room
 class RoomForm(ModelForm):
     class Meta:
         model = Room
-        fields = ('name', 'topic', 'location', 'date', 'time', 'price', 'description')
+        fields = ('name', 'topic', 'location', 'date', 'time', 'price', 'description', 'image')
         labels = {
             'description': "",
             'topic': "",
@@ -19,6 +19,7 @@ class RoomForm(ModelForm):
             'date': "",
             'time': "",
             'location': "",
+            'image': "",
         }
         widgets = {
             'topic': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Dla dzieci'}),
