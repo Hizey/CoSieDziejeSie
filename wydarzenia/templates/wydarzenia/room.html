@@ -48,32 +48,37 @@
       </div>
     </section>
 
-<div class="comment">
-<h3>Conwersation</h3>
-    <hr>
+    <div class="container">
+        <div class="section-title">
+          <h3>Komentarze</h3>
+        </div>
 
 
-    {% for message in room_messages %}
-    <div>
-        {% if request.user == message.user %}
-        <a href="{% url 'delete-message' message.id %}">Delete</a>
+        {% if request.user.is_authenticated %}
+        <div class="col-md-6 form-group comment">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input class="form-control" type="text" name="body" placeholder="Wpisz komentarz"/>
+<!--                <div class="text-center"><button type="submit">Dodaj komentarz</button></div>-->
+                <p></p>
+            </form>
+        </div>
         {% endif %}
-        <small>@{{message.user}}   {{message.created|timesince}} ago</small>
-        <p> {{message.body}}</p>
-        <hr>
-    </div>
-    {% endfor %}
-</div>
 
-{% if request.user.is_authenticated %}
-<div class="comment">
-    <form method="POST" action="">
-        {% csrf_token %}
-        <input type="text" name="body" placeholder="let us know what you think "/>
-        <p></p>
-    </form>
-</div>
-{% endif %}
+
+        {% for message in room_messages %}
+        <div>
+            {% if request.user == message.user %}
+            <a href="{% url 'delete-message' message.id %}">Delete</a>
+            {% endif %}
+            <small>@{{message.user}}   {{message.created|timesince}} ago</small>
+            <p> {{message.body}}</p>
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
+
+
 
 
 {% endblock %}

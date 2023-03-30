@@ -134,7 +134,7 @@ def create_room(request):
             room.save()
             return HttpResponseRedirect("/create-room?submitted=True")
     else:
-        form = RoomForm
+        form = RoomForm()
         if 'submitted' in request.GET:
             submitted = True
 
