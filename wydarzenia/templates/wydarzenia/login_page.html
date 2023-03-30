@@ -5,16 +5,18 @@
     <form method="POST" action="">
         {% csrf_token %}
 
-        <label>Username</label>
-        <input type="text" name="username" placeholder="Enter username">
+        <label>Nazwa Użytkownika</label>
+        <input type="text" name="username" placeholder="Wpisz nazwę">
 
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Enter password">
+        <label>Hasło</label>
+        <input type="password" name="password" placeholder="Wpisz hasło">
 
-        <input type="submit" value="Login">
+        <p><a href="{% url "password_reset" %}">Zapomniałeś hasła?</a></p>
+
+        <input type="submit" value="Zaloguj">
     </form>
 
-    <p>Not registered yet?</p>
-    <a href="{% url 'register_page' %}">Register</a>
+    <p>Nie zarejestrowany?</p>
+    <a href="{% url 'register_page' %}">Zarejestruj się</a>
 </div>
 {% endblock content %}
