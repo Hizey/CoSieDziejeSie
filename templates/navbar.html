@@ -25,6 +25,7 @@
           </li>
           {% endif %}
           {% if request.user.is_authenticated %}
+            <p>Hello {{request.user}}!</p>
           <li><a class="nav-link" href="{% url 'logout'  %}">Wyloguj</a></li>
           {% else %}
           <li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
@@ -32,6 +33,7 @@
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
+
       </nav><!-- .navbar -->
 
     </div>
