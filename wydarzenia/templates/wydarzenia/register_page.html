@@ -2,20 +2,34 @@
 
 {% block content %}
 
-{% if form.errors %}
+      <div class="container">
+        <div class="row row mt-5 d-flex justify-content-center" >
+            <div class="col-lg-8 mt-5 mt-lg-0">
 
-<p>
-    Wystąpił error przy twojej rejestracji...
-</p>
+                {% if form.errors %}
+                    <div class="section-title">
+                        <h4>Wystąpił błąd przy Twojej rejestracji...</h4>
+                        <p><a href="{% url 'home' %}">Home</a></p>
+                    </div>
+                {% endif %}
+                    <div class="section-title">
+                        <h2>Zarejestruj się</h2>
+                    </div>
 
-{% endif %}
-<div>
-    <form method=POST action="{% url 'register_page' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Zarejestruj">
-    </form>
-    <p>Już zarejestrowany?</p>
-    <a href="{% url 'login_page' %}">Zaloguj</a>
-</div>
+                    <form method=POST action="{% url 'register_page' %}" role="form" class="php-email-form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="text-center"><button type="submit">Zarejestruj</button></div>
+                    </form>
+
+                    <br>
+                    <br>
+                    <div class="section-title">
+                        <h4>Masz już konto?</h4>
+                        <p><a href="{% url 'login_page' %}">Zaloguj</a></p>
+                    </div>
+
+            </div>
+        </div>
+      </div>
 {% endblock content %}
