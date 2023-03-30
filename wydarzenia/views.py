@@ -5,12 +5,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.db.models import Q
 from datetime import date
 from django.shortcuts import get_object_or_404
 from .forms import Register_User_Form
 
 from .forms import RoomForm
-from .models import Room, Topic
+from .models import Room, Topic, Message
 
 
 def login_page(request):
@@ -56,7 +57,10 @@ def register_page(request):
 def home(request):
     q = request.GET.get("q") if request.GET.get("q") is not None else ""
     rooms = Room.objects.filter(
-        topic__name__icontains=q, date__gte=date.today()
+        Q(topic__name__icontains=q)
+        | Q(name__icontains=q)
+        | Q(description__icontains=q),
+        date__gte=date.today(),
     ).order_by("date")
     return render(
         request,
@@ -91,16 +95,28 @@ def room(request, pk):
     try:
         room = Room.objects.get(id=pk)
         room_messages = room.message_set.all().order_by("-created")
+
+        if request.method == "POST":
+            message = Message.objects.create(
+                user=request.user, room=room, body=request.POST.get("body")
+            )
+            return redirect("room", pk=room.id)
         return render(
-            request, "wydarzenia/room.html", {"room": room, "room_messages": room_messages}
+            request,
+            "wydarzenia/room.html",
+            {"room": room, "room_messages": room_messages},
         )
     except Room.DoesNotExist:
-        return render(request, "404.html", {"my_var": "The Room You Are Looking For Does Not Exists"})
+        return render(
+            request,
+            "404.html",
+            {"my_var": "The Room You Are Looking For Does Not Exists"},
+        )
 
 
 def profile(request, pk):
     try:
-        profile = get_object_or_404(User, pk=pk)
+        profile = User.objects.get(id=pk)
         room_list_by_date = Room.objects.filter(host=pk).order_by("date")
         return render(
             request,
@@ -111,8 +127,9 @@ def profile(request, pk):
                 "room_list": room_list_by_date,
             },
         )
-    except profile.DoesNotExist:
+    except User.DoesNotExist:
         return render(request, "404.html", {"my_var": "User Does Not Exists"})
+
 
 @login_required(login_url="login")
 def create_room(request):
@@ -140,7 +157,12 @@ def update_room(request, pk):
 
         return render(request, "wydarzenia/room_form.html", {"form": form})
     except Room.DoesNotExist:
-        return render(request, "404.html", {"my_var": "The Room You Want To Update Does Not Exists"})
+        return render(
+            request,
+            "404.html",
+            {"my_var": "The Room You Want To Update Does Not Exists"},
+        )
+
 
 @login_required(login_url="login")
 def delete_room(request, pk):
@@ -152,13 +174,26 @@ def delete_room(request, pk):
             return redirect("home")
         return render(request, "wydarzenia/delete.html", {"obj": room})
     except Room.DoesNotExist:
-        return render(request, "404.html", {"my_var": "The Room You Want To Delete Does Not Exists"})
+        return render(
+            request,
+            "404.html",
+            {"my_var": "The Room You Want To Delete Does Not Exists"},
+        )
 
+
+@login_required(login_url="login")
+def delete_message(request, pk):
+    message = Message.objects.get(id=pk)
+
+    if request.method == "POST":
+        message.delete()
+        return redirect("home")
+    return render(request, "wydarzenia/delete.html", {"obj": message})
 
 
 def error_500(request):
-    return render(request, '500.html')
+    return render(request, "500.html")
 
 
 def error_404(request, exception):
-    return render(request, '404.html')
+    return render(request, "404.html")
