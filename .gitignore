@@ -6,3 +6,4 @@ db.sqlite3
 static/admin/*
 static/django_tinymce/*
 static/tinymce/*
+media/*
