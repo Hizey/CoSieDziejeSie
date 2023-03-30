@@ -1,13 +1,28 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Register">
-    </form>
-    <p>Already registered?</p>
-    <a href="{% url 'login' %}">Login</a>
-</div>
+
+<section id="add-event" class="add-event">
+      <div class="container">
+        <div class="row row mt-5 d-flex justify-content-center" >
+          <div class="col-lg-8 mt-5 mt-lg-0">
+
+            <div class="section-title">
+              <h2>Zarejestruj się</h2>
+            </div>
+
+            <form action="" method="POST" role="form" class="php-email-form">
+                {% csrf_token %}
+                {{form.as_p}}
+
+              <div class="text-center"><a href="#"><button type="submit">Potwierdź</button></a></div>
+            </form>
+            <h4>Masz już konto? <a href="{% url 'login' %}">Zaloguj się</a></h4>
+
+
+          </div>
+
+        </div>
+      </div>
+    </section>
 {% endblock content %}

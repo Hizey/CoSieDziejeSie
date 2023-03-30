@@ -2,7 +2,6 @@ from django.forms import ModelForm
 from tinymce.widgets import TinyMCE
 from django import forms
 
-
 from .models import Room
 
 

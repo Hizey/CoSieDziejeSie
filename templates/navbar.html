@@ -16,13 +16,7 @@
           <li><a class="nav-link" href="#">Support</a></li>
           {% endif %}
           {% if request.user.is_superuser %}
-          <li class="dropdown"><a href="#"><span>Panel Admina</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="{% url 'admin:index' %}">Główny</a></li>
-              <li><a href="#">Lista użytkowników</a></li>
-              <li><a href="#">Wiadomości</a></li>
-            </ul>
-          </li>
+          <li><a href="{% url 'admin:index' %}"><span>Panel Admina</span></a></li>
           {% endif %}
           {% if request.user.is_authenticated %}
           <li><a class="nav-link" href="{% url 'logout'  %}">Wyloguj {{ request.user }}</a></li>
