@@ -18,6 +18,11 @@
                     <a href="{% url 'history' %}?q={{topic.name}}">{{topic.name}}</a>
                 </li>
               {% endfor %}
+                <li class="filter-active" >
+                  <form method="GET" action="{% url 'history' %}">
+                    <input type="text" name="q" placeholder="Wyszukaj wydarzenie...">
+                  </form>
+                </li>
             </ul>
           </div>
         </div>

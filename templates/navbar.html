@@ -16,26 +16,17 @@
           <li><a class="nav-link" href="#">Support</a></li>
           {% endif %}
           {% if request.user.is_superuser %}
-          <li class="dropdown"><a href="#"><span>Panel Admina</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="{% url 'admin:index' %}">Główny</a></li>
-              <li><a href="#">Lista użytkowników</a></li>
-              <li><a href="#">Wiadomości</a></li>
-            </ul>
-          </li>
+          <li><a href="{% url 'admin:index' %}"><span>Panel Admina</span></a></li>
           {% endif %}
           {% if request.user.is_authenticated %}
-            <p>Hello {{request.user}}!</p>
-          <li><a class="nav-link" href="{% url 'logout'  %}">Wyloguj</a></li>
+          <li><a class="nav-link" href="{% url 'logout'  %}">Wyloguj {{ request.user }}</a></li>
           {% else %}
           <li><a class="nav-link" href="{% url 'login_page' %}">Login</a></li>
           {% endif %}
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
-         <form method="GET" action="{% url 'home' %}">
-          <input type="text" name="q" placeholder="Wyszukaj wydarzenie...">
-        </form>
+
       </nav><!-- .navbar -->
 
     </div>

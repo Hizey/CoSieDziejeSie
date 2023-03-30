@@ -77,7 +77,10 @@ def home(request):
 def history(request):
     q = request.GET.get("q") if request.GET.get("q") is not None else ""
     rooms = Room.objects.filter(
-        topic__name__icontains=q, date__lt=date.today()
+        Q(topic__name__icontains=q)
+        | Q(name__icontains=q)
+        | Q(description__icontains=q),
+        date__lt=date.today()
     ).order_by("-date")
     return render(
         request,

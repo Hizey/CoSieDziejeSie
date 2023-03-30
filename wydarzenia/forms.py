@@ -4,7 +4,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-
 from .models import Room
 
 
@@ -25,7 +24,7 @@ class RoomForm(ModelForm):
             'topic': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Dla dzieci'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Koncert Ich Troje'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '0'}),
-            'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}),
+            'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'DD.MM.YYYY'}),
             'time': forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'HH:MM'}),
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Las Zwierzyniecki'}),
             'description': TinyMCE(attrs={"cols": 80, "rows": 30, "class": "form-control"})
