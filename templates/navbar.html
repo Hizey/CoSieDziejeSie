@@ -33,7 +33,9 @@
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
-
+         <form method="GET" action="{% url 'home' %}">
+          <input type="text" name="q" placeholder="Wyszukaj wydarzenie...">
+        </form>
       </nav><!-- .navbar -->
 
     </div>

@@ -33,7 +33,6 @@ class Room(models.Model):
         return self.name
 
 
-
 class Meta:
     ordering = ["-updated", "-created"]
 
