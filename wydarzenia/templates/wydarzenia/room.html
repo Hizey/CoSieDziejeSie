@@ -55,7 +55,7 @@
 
 
         {% if request.user.is_authenticated %}
-        <div class="col-md-6 form-group comment">
+        <div class="col-md-4 form-group comment">
             <form method="POST" action="">
                 {% csrf_token %}
                 <input class="form-control" type="text" name="body" placeholder="Wpisz komentarz"/>
@@ -68,10 +68,10 @@
 
         {% for message in room_messages %}
         <div>
+            <small><a href="{% url 'profile' message.user.id %}">{{message.user}}</a>   {{message.created|timesince}} temu</small>
             {% if request.user == message.user %}
-            <a href="{% url 'delete-message' message.id %}">Delete</a>
+            <a href="{% url 'delete-message' message.id %}" title="Usuń"><i class="bx bx-trash"></i></a>
             {% endif %}
-            <small>@{{message.user}}   {{message.created|timesince}} ago</small>
             <p> {{message.body}}</p>
             <hr>
         </div>

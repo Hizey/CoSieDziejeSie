@@ -425,6 +425,7 @@ section {
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 20px;
+  margin-top: 30px;
   padding-bottom: 0;
   color: #0f394c;
 }
@@ -1332,7 +1333,6 @@ section {
 /*--------------------------------------------------------------
 # Add event form
 --------------------------------------------------------------*/
-
 
 .add-event .info {
   width: 100%;
