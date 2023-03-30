@@ -9,7 +9,7 @@ from datetime import date
 from django.shortcuts import get_object_or_404
 
 from .forms import RoomForm
-from .models import Room, Topic
+from .models import Room, Topic, Message
 
 
 def login_page(request):
@@ -92,17 +92,23 @@ def history(request):
 def room(request, pk):
     try:
         room = Room.objects.get(id=pk)
-        room_messages = room.message_set.all().order_by("-created")
-        return render(
-            request, "wydarzenia/room.html", {"room": room, "room_messages": room_messages}
-        )
+        room_messages = room.message_set.all().order_by('-created')
+
+        if request.method == 'POST':
+            message = Message.objects.create(
+                user=request.user,
+                room=room,
+                body=request.POST.get('body')
+            )
+            return redirect('room', pk=room.id)
+        return render(request, "wydarzenia/room.html", {"room": room, 'room_messages': room_messages})
     except Room.DoesNotExist:
         return render(request, "404.html", {"my_var": "The Room You Are Looking For Does Not Exists"})
 
 
 def profile(request, pk):
     try:
-        profile = get_object_or_404(User, pk=pk)
+        profile = User.objects.get(id=pk)
         room_list_by_date = Room.objects.filter(host=pk).order_by("date")
         return render(
             request,
@@ -113,7 +119,7 @@ def profile(request, pk):
                 "room_list": room_list_by_date,
             },
         )
-    except profile.DoesNotExist:
+    except User.DoesNotExist:
         return render(request, "404.html", {"my_var": "User Does Not Exists"})
 
 
@@ -163,6 +169,15 @@ def delete_room(request, pk):
     except Room.DoesNotExist:
         return render(request, "404.html", {"my_var": "The Room You Want To Delete Does Not Exists"})
 
+
+@login_required(login_url="login")
+def delete_message(request, pk):
+    message = Message.objects.get(id=pk)
+
+    if request.method == "POST":
+        message.delete()
+        return redirect("home")
+    return render(request, "wydarzenia/delete.html", {"obj": message})
 
 
 def error_500(request):
