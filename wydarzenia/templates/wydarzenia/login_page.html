@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <label>Nazwa Użytkownika</label>
+        <input type="text" name="username" placeholder="Wpisz nazwę">
+
+        <label>Hasło</label>
+        <input type="password" name="password" placeholder="Wpisz hasło">
+
+        <p><a href="{% url "password_reset" %}">Zapomniałeś hasła?</a></p>
+
+        <input type="submit" value="Zaloguj">
+    </form>
+
+    <p>Nie zarejestrowany?</p>
+    <a href="{% url 'register_page' %}">Zarejestruj się</a>
+</div>
+{% endblock content %}
