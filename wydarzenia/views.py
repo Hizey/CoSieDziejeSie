@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.db.models import Q
 from datetime import date
@@ -133,14 +133,20 @@ def profile(request, pk):
 
 @login_required(login_url="login")
 def create_room(request):
-    form = RoomForm()
+    submitted = False
     if request.method == "POST":
         form = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("home")
+            room = form.save(commit=False)
+            room.host = request.user
+            room.save()
+            return HttpResponseRedirect("/create-room?submitted=True")
+    else:
+        form = RoomForm()
+        if 'submitted' in request.GET:
+            submitted = True
 
-    return render(request, "wydarzenia/room_form.html", {"form": form})
+    return render(request, "wydarzenia/room_form.html", {"form": form, 'submitted': submitted})
 
 
 @login_required(login_url="login")
