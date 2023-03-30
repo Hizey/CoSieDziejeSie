@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+{% if form.errors %}
+
+<p>
+    Wystąpił error przy twojej rejestracji...
+</p>
+
+{% endif %}
+<div>
+    <form method=POST action="{% url 'register_page' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Zarejestruj">
+    </form>
+    <p>Już zarejestrowany?</p>
+    <a href="{% url 'login_page' %}">Zaloguj</a>
+</div>
+{% endblock content %}

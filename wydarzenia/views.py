@@ -7,30 +7,28 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from datetime import date
 from django.shortcuts import get_object_or_404
+from .forms import Register_User_Form
 
 from .forms import RoomForm
 from .models import Room, Topic
 
 
 def login_page(request):
-    page = "login"
-
+    page = 'login_page'
     if request.user.is_authenticated:
         return redirect("home")
 
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             login(request, user)
-            return redirect("home")
+            return redirect('home')
         else:
-            messages.info(request, "Username or password is incorrect")
-
-    return render(request, "wydarzenia/login.html", {"page": page})
+            return redirect('login_page')
+    else:
+        return render(request, "wydarzenia/login_page.html", {"page": page})
 
 
 def logout_user(request):
@@ -39,20 +37,20 @@ def logout_user(request):
 
 
 def register_page(request):
-    form = UserCreationForm()
-
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = Register_User_Form(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.save()
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
             login(request, user)
+            messages.success(request,('Rejestracja zakończona pomyślnie!'))
             return redirect("home")
-        else:
-            messages.warning(request, "error rejestracji")
+    else:
+        form = Register_User_Form()
 
-    return render(request, "wydarzenia/register.html", {"form": form})
+    return render(request, "wydarzenia/register_page.html", {"form": form})
 
 
 def home(request):
