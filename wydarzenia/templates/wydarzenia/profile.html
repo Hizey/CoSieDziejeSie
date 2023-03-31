@@ -42,7 +42,13 @@
               {% for room in room_list %}
               <div class="col-lg-6 col-md-6 portfolio-item">
                 <div class="portfolio-wrap">
-                  <img src="{% static 'assets/img/portfolio/1.jpg' %}" class="img-fluid" alt="">
+
+                {% if room.image %}
+                    <img src="{{ room.image.url }}" class="img-fluid" alt="">
+                {% else %}
+                    <img src="{% static 'assets/img/portfolio/1.jpg' %}" class="img-fluid" alt="">
+                {% endif %}
+
                   <div class="portfolio-info">
                     <h4>{{ room.name }}</h4>
                     <p>{{ room.date|date:"d.m.y" }}</p>
