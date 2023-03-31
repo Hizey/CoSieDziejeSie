@@ -38,6 +38,8 @@ def logout_user(request):
 
 
 def register_page(request):
+    if request.user.is_authenticated:
+        return redirect("home")
     if request.method == "POST":
         form = Register_User_Form(request.POST)
         if form.is_valid():
@@ -134,7 +136,7 @@ def profile(request, pk):
         return render(request, "404.html", {"my_var": "User Does Not Exists"})
 
 
-@login_required(login_url="login")
+@login_required(login_url="login_page")
 def create_room(request):
     submitted = False
     if request.method == "POST":
@@ -152,19 +154,20 @@ def create_room(request):
     return render(request, "wydarzenia/room_form.html", {"form": form, 'submitted': submitted})
 
 
-@login_required(login_url="login")
+@login_required(login_url="login_page")
 def update_room(request, pk):
     try:
         room = Room.objects.get(id=pk)
         form = RoomForm(instance=room)
-
-        if request.method == "POST":
-            form = RoomForm(request.POST, instance=room)
-            if form.is_valid():
-                form.save()
-                return redirect("home")
-
-        return render(request, "wydarzenia/room_form.html", {"form": form})
+        if room.host == request.user:
+            if request.method == "POST":
+                form = RoomForm(request.POST, instance=room)
+                if form.is_valid():
+                    form.save()
+                    return redirect("home")
+            return render(request, "wydarzenia/room_form.html", {"form": form})
+        else:
+            return render(request, "403.html")
     except Room.DoesNotExist:
         return render(
             request,
@@ -173,15 +176,17 @@ def update_room(request, pk):
         )
 
 
-@login_required(login_url="login")
+@login_required(login_url="login_page")
 def delete_room(request, pk):
     try:
         room = Room.objects.get(id=pk)
-
-        if request.method == "POST":
-            room.delete()
-            return redirect("home")
-        return render(request, "wydarzenia/delete.html", {"obj": room})
+        if room.host == request.user:
+            if request.method == "POST":
+                room.delete()
+                return redirect("home")
+            return render(request, "wydarzenia/delete.html", {"obj": room})
+        else:
+            return render(request, "403.html")
     except Room.DoesNotExist:
         return render(
             request,
@@ -196,7 +201,7 @@ def delete_message(request, pk):
 
     if request.method == "POST":
         message.delete()
-        return redirect("home")
+        return redirect("room",message.room.id)
     return render(request, "wydarzenia/delete.html", {"obj": message})
 
 
