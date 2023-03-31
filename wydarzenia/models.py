@@ -24,7 +24,7 @@ class Room(models.Model):
     name = models.CharField(max_length=200, default="")
     price = models.DecimalField(max_digits=12, decimal_places=2, null=True)
     description = tinymce_models.HTMLField(blank=True, default="")
-    date = models.DateField(null=True, blank=True)
+    date = models.DateField(null=True)
     time = models.TimeField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
